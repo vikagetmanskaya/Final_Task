@@ -1,15 +1,13 @@
 package com.example.demo1.command;
 
-import com.example.demo1.command.impl.AddUserCommand;
-import com.example.demo1.command.impl.DefaultCommand;
-import com.example.demo1.command.impl.LoginCommand;
-import com.example.demo1.command.impl.LogoutCommand;
+import com.example.demo1.command.impl.*;
 
 public enum CommandType {
     ADD_USER(new AddUserCommand()),
     LOGIN(new LoginCommand()),
     LOGOUT(new LogoutCommand()),
-    DEFAULT(new DefaultCommand());
+    DEFAULT(new DefaultCommand()),
+    REGISTER(new RegisterCommand());
     Command command;
 
     CommandType(Command command) {

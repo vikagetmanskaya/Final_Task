@@ -11,6 +11,7 @@
     <title>Register</title>
 </head>
 <body>
+<form action="controller">
 <input type="hidden" name="command" value="add_user"/>
 Email: <input type="text" name="email" value=""/>
 <br/>
@@ -24,7 +25,7 @@ Date of birth: <input type="date" name="date_of_birth" value=""/>
 <br/>
 <input type="submit" name="sub" value="Push"/>
 <br/>
-${login_msg}
-
+${register_msg}
+</form>
 </body>
 </html>

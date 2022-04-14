@@ -1,7 +1,10 @@
 package com.example.demo1.command;
 
+import com.example.demo1.constant.PagePath;
+import com.example.demo1.constant.RequestParameterAndAttribute;
+
 public class Router {
-    private String page = "index.jsp";
+    private String page = PagePath.START_PAGE;
     private Type type = Type.FORWARD;
     enum Type{
         FORWARD, REDIRECT;

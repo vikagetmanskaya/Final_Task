@@ -9,7 +9,7 @@
 <br/>
 <form action="controller">
     <input type="hidden" name="command" value="login"/>
-   Login: <input type="text" name="login" value=""/>
+   Login: <input type="text" name="email" value=""/>
     <br/>
    Password: <input type="password" name="pass" value=""/>
     <br/>
@@ -22,8 +22,10 @@
     ${filter_attr}
 </form>
 <form action="controller">
-    <input type="hidden" name="command" value="default"/>
+    <input type="hidden" name="command" value="register"/>
     <input type="submit" name="sub" value="Register"/>
+    <br/>
+    ${register_msg}
 </form>
 </body>
 </html>

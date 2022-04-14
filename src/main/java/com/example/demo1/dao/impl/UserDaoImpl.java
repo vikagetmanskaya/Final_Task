@@ -11,7 +11,7 @@ import java.util.List;
 
 public class UserDaoImpl implements BaseDao<User>, UserDao {
     private static final String SELECT_LOGIN_PASSWORD = "SELECT password FROM users WHERE email = ?";
-    private static final String INSERT_USER = "INSERT INTO `tattoosalon`.`users` (`email`, `password`, `first_name`, `last_name`, `date_of_birth`) VALUES (?, ?, ?, ?, ?)";
+    private static final String INSERT_USER = "INSERT INTO `tattoosalon`.`users` ( `email`, `password`, `first_name`, `last_name`, `date_of_birth`) VALUES (?, ?, ?, ?, ?)";
     private static UserDaoImpl instance = new UserDaoImpl();
 
     private UserDaoImpl() {
@@ -25,13 +25,14 @@ public class UserDaoImpl implements BaseDao<User>, UserDao {
     public boolean add(User user) throws DaoException {
         boolean match = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_USER)) {
+            //statement.setLong(1, user.getId());
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getFirstName());
             statement.setString(4, user.getLastName());
             statement.setDate(5, (user.getDateOfBirth()));
-            statement.executeUpdate();
-            if(statement.executeUpdate() != 0){
+            int row = statement.executeUpdate();
+            if(row == 1){
                 match = true;
             }
         } catch (SQLException e) {

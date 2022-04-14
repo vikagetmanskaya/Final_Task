@@ -36,4 +36,5 @@ public class User extends AbstractEntity {
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
+
 }

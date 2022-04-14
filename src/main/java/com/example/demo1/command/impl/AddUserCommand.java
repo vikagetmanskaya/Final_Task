@@ -1,6 +1,8 @@
 package com.example.demo1.command.impl;
 
 import com.example.demo1.command.Command;
+import com.example.demo1.constant.PagePath;
+import com.example.demo1.constant.RequestParameterAndAttribute;
 import com.example.demo1.entity.User;
 import com.example.demo1.exception.CommandException;
 import com.example.demo1.exception.ServiceException;
@@ -14,21 +16,21 @@ public class AddUserCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
         String page;
-        String email = request.getParameter("email");
-        String password = request.getParameter("pass");
-        String firstName = request.getParameter("first_name");
-        String lastName = request.getParameter("last_name");
-        Date dateOfBirth = Date.valueOf(request.getParameter("date_of_birth"));
+        String email = request.getParameter(RequestParameterAndAttribute.EMAIL);
+        String password = request.getParameter(RequestParameterAndAttribute.PASSWORD);
+        String firstName = request.getParameter(RequestParameterAndAttribute.FIRST_NAME);
+        String lastName = request.getParameter(RequestParameterAndAttribute.LAST_NAME);
+        Date dateOfBirth = Date.valueOf(request.getParameter(RequestParameterAndAttribute.DATE_OF_BIRTH));
         UserService userService = UserServiceImpl.getInstance();
         User user = new User(email, password, firstName,lastName,dateOfBirth);
 
         try {
             if(userService.addUser(user)){
-                request.setAttribute("login_msg", "register successfully");
-                page = "index.jsp";
+                request.setAttribute(RequestParameterAndAttribute.REGISTER_MESSAGE, "register successfully");
+                page = PagePath.START_PAGE;
             }else{
-                request.setAttribute("login_msg", "incorrect data");
-                page = "pages/register.jsp";
+                request.setAttribute(RequestParameterAndAttribute.REGISTER_MESSAGE, "incorrect data");
+                page = PagePath.REGISTER_PAGE;
             }
         } catch (ServiceException e) {
             throw new CommandException(e);

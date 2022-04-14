@@ -4,6 +4,8 @@ import java.io.*;
 
 import com.example.demo1.command.Command;
 import com.example.demo1.command.CommandType;
+import com.example.demo1.constant.PagePath;
+import com.example.demo1.constant.RequestParameterAndAttribute;
 import com.example.demo1.exception.CommandException;
 import com.example.demo1.pool.ConnectionPool;
 import jakarta.servlet.ServletException;
@@ -28,7 +30,7 @@ public class Controller extends HttpServlet {
 //int resNum = 2 * Integer.parseInt(strNum);
 //request.setAttribute("result", resNum);
 //        // Hello
-        String commandStr = request.getParameter("command");
+        String commandStr = request.getParameter(RequestParameterAndAttribute.COMMAND);
         Command command = CommandType.define(commandStr);
         String page;
         try {
@@ -39,7 +41,7 @@ public class Controller extends HttpServlet {
             //response.sendError(500);//1
             // throw new ServletException(e);//2
             request.setAttribute("error_msg", e.getCause()); //3
-            request.getRequestDispatcher("pages/error/error_500.jsp").forward(request, response); //3
+            request.getRequestDispatcher(PagePath.ERROR_PAGE_500).forward(request, response); //3
 
         }
 
