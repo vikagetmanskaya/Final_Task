@@ -18,6 +18,10 @@ Hi(redirect/forward) ${user_name}
 ${filter_attr}
 <hr/>
 <form action="controller">
+    <input type="hidden" name="command" value="catalog"/>
+    <input type="submit" value="Catalog"/>
+</form>
+<form action="controller">
     <input type="hidden" name="command" value="logout"/>
     <input type="submit" value="logout"/>
 </form>
