@@ -11,7 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "helloServlet", urlPatterns = {"/controller", "*.do"})
+@WebServlet(name = "helloServlet", urlPatterns = {"/controller"})
 public class Controller extends HttpServlet {
     //private static final Logger logger = LogManager.getLogger();
 
@@ -36,7 +36,7 @@ public class Controller extends HttpServlet {
         //logger.info("Servlet destroy: " + this.getServletName());
     }
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
+        response.setContentType("text/html");//в фильтры
         String commandType = request.getParameter(RequestParameterAttributeName.COMMAND);
         Command command = CommandType.define(commandType);
         try {

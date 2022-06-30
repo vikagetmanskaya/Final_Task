@@ -1,8 +1,9 @@
 package com.example.finaltask.entity;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Tattoo extends AbstractEntity{
+    private long id;
     private String name;
     private String firstNameMaster;
     private String lastNameMaster;
@@ -17,6 +18,10 @@ public class Tattoo extends AbstractEntity{
         this.size = size;
         this.dateAdded = dateAdded;
         this.rating = rating;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {

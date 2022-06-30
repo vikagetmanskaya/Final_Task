@@ -1,4 +1,4 @@
 package com.example.finaltask.entity;
 
-public class AbstractEntity {
+public abstract class AbstractEntity {
 }

@@ -8,22 +8,26 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Main</title>
+    <title>Main Client</title>
 </head>
 <body>
-Hello(forward) ${user}
-<hr/>
-Hi(redirect/forward) ${user_name}
-<hr/>
-${filter_attr}
+Hello ${user}
+
 <hr/>
 <form action="controller">
-    <input type="hidden" name="command" value="catalog"/>
+    <input type="hidden" name="command" value="find_service"/>
     <input type="submit" value="Catalog"/>
 </form>
 <form action="controller">
+    <input type="hidden" name="command" value="make_order_page"/>
+    <input type="submit" value="Make order"/>
+</form>
+<form action="controller">
+    <br/>
     <input type="hidden" name="command" value="logout"/>
     <input type="submit" value="logout"/>
 </form>
+<br/>
+${add_msg}
 </body>
 </html>

@@ -11,16 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import static com.example.finaltask.dao.DataBaseColumn.*;
 
 public class TattooDaoImpl implements BaseDao<Tattoo> {
-    private static final String FIND_ALL_TATTOOS = "SELECT * FROM tattoos";
-    //сделать класс констант колонок БД?
-    private static final String COLUMN_NAME = "name";
-    private static final String COLUMN_FIRST_NAME_MASTER = "first_name_master";
-    private static final String COLUMN_LAST_NAME_MASTER = "last_name_master";
-    private static final String COLUMN_SIZE = "size_in_cm";
-    private static final String COLUMN_DATE = "date_added";
-    private static final String COLUMN_RATING = "rating";
+    private static final String FIND_ALL_TATTOOS = "SELECT name, first_name_master, last_name_master, size_in_cm, date_added, rating FROM tattoos";
+
     private static TattooDaoImpl instance = new TattooDaoImpl();
 
     private TattooDaoImpl() {
@@ -43,13 +38,19 @@ public class TattooDaoImpl implements BaseDao<Tattoo> {
     public List<Tattoo> findAll() throws DaoException {
         List<Tattoo> tattooList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_ALL_TATTOOS)){
-            try(ResultSet resultSet = statement.executeQuery()){
-                if(resultSet.next()){
-                    Tattoo tattoo = new Tattoo(resultSet.getString(COLUMN_NAME), resultSet.getString(COLUMN_FIRST_NAME_MASTER), resultSet.getString(COLUMN_LAST_NAME_MASTER), resultSet.getInt(COLUMN_SIZE), resultSet.getDate(COLUMN_DATE), resultSet.getDouble(COLUMN_RATING));
+             PreparedStatement statement = connection.prepareStatement(FIND_ALL_TATTOOS);
+             ResultSet resultSet = statement.executeQuery()){
+
+                while(resultSet.next()){
+                    Tattoo tattoo = new Tattoo(resultSet.getString(COLUMN_NAME),
+                            resultSet.getString(COLUMN_FIRST_NAME_MASTER),
+                            resultSet.getString(COLUMN_LAST_NAME_MASTER),
+                            resultSet.getInt(COLUMN_SIZE),
+                            resultSet.getDate(COLUMN_DATE),
+                            resultSet.getDouble(COLUMN_RATING));//билдер или мэппер
                     tattooList.add(tattoo);
                 }
-            }
+
         } catch (SQLException e) {
             throw new DaoException(e);
         }

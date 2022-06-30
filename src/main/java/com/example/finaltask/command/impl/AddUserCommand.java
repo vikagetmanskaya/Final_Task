@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import static com.example.finaltask.command.RequestParameterAttributeName.*;
 import static com.example.finaltask.command.PagePath.*;
 
-import java.sql.Date;
+import java.sql.Date;// make util.Date
 
 public class AddUserCommand implements Command {
     @Override
@@ -23,7 +23,11 @@ public class AddUserCommand implements Command {
         String lastName = request.getParameter(LAST_NAME);
         Date dateOfBirth = Date.valueOf(request.getParameter(DATE_OF_BIRTH));
         UserService userService = UserServiceImpl.getInstance();
-        User user = new User(email, password, firstName,lastName,dateOfBirth);
+        User user = new User.UserBuilder().setEmail(email).setPassword(password)
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setDateOfBirth(dateOfBirth)
+                .getUser();
 
         try {
             if(userService.addUser(user)){

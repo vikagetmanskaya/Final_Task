@@ -11,28 +11,30 @@ import com.example.finaltask.validator.CustomValidator;
 import com.example.finaltask.validator.impl.CustomValidatorImpl;
 
 public class UserServiceImpl implements UserService {
-    private static UserServiceImpl instance = new UserServiceImpl();
+    private static UserServiceImpl instance;
     private CustomValidator validator = CustomValidatorImpl.getInstance();
     private UserServiceImpl() {
     }
 
     public static UserServiceImpl getInstance() {
+        if(instance == null){
+            instance = new UserServiceImpl();
+        }
         return instance;
     }
 
     @Override
-    public boolean authenticate(String email, String password) throws ServiceException {
-        //md5
+    public User authenticate(String email, String password) throws ServiceException {
         UserDao userDao = UserDaoImpl.getInstance();
-        boolean match = false;
+        User user = new User();
         try {
             if(validator.validateEmail(email) && validator.validatePassword(password)) {
-                match = userDao.authenticate(email, password);
+                user = userDao.authenticate(email, password);
             }
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
-        return match;
+        return user;
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.example.finaltask.command;
 
 import com.example.finaltask.command.impl.*;
 import com.example.finaltask.command.impl.LogoutCommand;
-import com.example.finaltask.command.impl.toPageCommand.ToRegisterPageCommand;
+import com.example.finaltask.command.impl.go.ToRegisterPageCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,9 +22,11 @@ public enum CommandType {
 
 
     public static Command define(String commandStr) {
+
         CommandType current;
          try {
-             current = CommandType.valueOf(commandStr.toUpperCase());
+            assert commandStr != null;
+                 current = CommandType.valueOf(commandStr.toUpperCase());
          }catch (IllegalArgumentException e){
              logger.error("Command " + commandStr + " is missing", e);
              current = DEFAULT;

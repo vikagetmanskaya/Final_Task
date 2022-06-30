@@ -1,4 +1,4 @@
-package com.example.finaltask.command.impl.toPageCommand;
+package com.example.finaltask.command.impl.go;
 
 import com.example.finaltask.command.Command;
 import com.example.finaltask.command.Router;

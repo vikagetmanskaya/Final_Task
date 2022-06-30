@@ -2,6 +2,7 @@ package com.example.finaltask.command.impl;
 
 import com.example.finaltask.command.Command;
 import com.example.finaltask.command.Router;
+import com.example.finaltask.entity.User;
 import com.example.finaltask.exception.CommandException;
 import com.example.finaltask.exception.ServiceException;
 import com.example.finaltask.service.UserService;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import static com.example.finaltask.command.RequestParameterAttributeName.*;
 import static com.example.finaltask.command.PagePath.*;
+import static com.example.finaltask.entity.UserRole.ADMIN;
 
 public class LoginCommand implements Command {
     @Override
@@ -18,17 +20,19 @@ public class LoginCommand implements Command {
         String password = request.getParameter(PASSWORD);
         UserService userService = UserServiceImpl.getInstance();
         String page;
-        HttpSession session = request.getSession();
         try {
-            if(userService.authenticate(email, password)){
+            User user = userService.authenticate(email, password);
+            if(user != null){
                 request.setAttribute(USER, email);
-                session.setAttribute(USER_NAME, email);
-                page = MAIN_PAGE;
+                page = switch (user.getUserRole()){
+                    case ADMIN -> MAIN_PAGE_ADMIN;
+                    case CLIENT -> MAIN_PAGE_CLIENT;
+                    default -> throw new IllegalStateException("Unexpected value: " + user.getUserRole());
+                };
             }else {
                 request.setAttribute(LOGIN_MESSAGE, "incorrect login or password");
                 page = START_PAGE;
             }
-            session.setAttribute("current_page", page);//сделать константы сессии
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

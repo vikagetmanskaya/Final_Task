@@ -3,15 +3,17 @@ package com.example.finaltask.dao.impl;
 import com.example.finaltask.dao.BaseDao;
 import com.example.finaltask.dao.UserDao;
 import com.example.finaltask.entity.User;
+import com.example.finaltask.entity.UserRole;
 import com.example.finaltask.exception.DaoException;
 import com.example.finaltask.pool.ConnectionPool;
 
 import java.sql.*;
 import java.util.List;
+import static com.example.finaltask.dao.DataBaseColumn.*;
 
 public class UserDaoImpl implements BaseDao<User>, UserDao {
-    public static final String COLUMN_PASSWORD = "password";
-    private static final String SELECT_LOGIN_PASSWORD = "SELECT password FROM users WHERE email = ?";
+    private static final String SELECT_LOGIN_PASSWORD = "SELECT first_name, last_name, date_of_birth, " +
+            "user_role FROM users WHERE email = ? AND password = ?";
     private static final String INSERT_USER = "INSERT INTO `tattoosalon`.`users` ( `email`, `password`, `first_name`, `last_name`, `date_of_birth`) VALUES (?, ?, ?, ?, ?)";
     private static UserDaoImpl instance = new UserDaoImpl();
 
@@ -31,7 +33,7 @@ public class UserDaoImpl implements BaseDao<User>, UserDao {
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getFirstName());
             statement.setString(4, user.getLastName());
-            statement.setDate(5, (user.getDateOfBirth()));
+            statement.setDate(5, (Date) user.getDateOfBirth());
             int row = statement.executeUpdate();
             if(row == 1){
                 match = true;
@@ -58,23 +60,27 @@ public class UserDaoImpl implements BaseDao<User>, UserDao {
     }
 
     @Override
-    public boolean authenticate(String email, String password) throws DaoException {
+    public User authenticate(String email, String password) throws DaoException {
 
-        boolean match = false;
+        User user = new User();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_LOGIN_PASSWORD)) {
             statement.setString(1, email);
+            statement.setString(2, password);
             try(ResultSet resultSet = statement.executeQuery()) {
-                String passFromDb;
+
                 if (resultSet.next()) {
-                    passFromDb = resultSet.getString(COLUMN_PASSWORD);
-                    match = password.equals(passFromDb);
+                    user = new User.UserBuilder().setEmail(email)
+                            .setFirstName(resultSet.getString(1))
+                            .setLastName(resultSet.getString(2))
+                            .setDateOfBirth(resultSet.getDate(3))
+                            .setRole(UserRole.valueOf(resultSet.getString(4))).getUser();
                 }
             }
 
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-        return match;
+        return user;
     }
 }
